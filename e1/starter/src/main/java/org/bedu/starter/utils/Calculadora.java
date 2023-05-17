@@ -2,6 +2,11 @@ package org.bedu.starter.utils;
 
 public class Calculadora {
 
+    private String nombre;
+    public Calculadora(String nombre){
+        this.nombre = nombre;
+    }
+
     public int sumar(int a,int b){
         return a + b;
     }
