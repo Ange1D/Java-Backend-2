@@ -1,6 +1,7 @@
 package org.bedu.rest.controller;
 
 import org.bedu.rest.model.Contact;
+import org.bedu.rest.model.UpdatedContact;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,6 +47,30 @@ public class ContactController {
         return newContact;
     }
 
+    //PUT /conctacts/nombre -> Actualizar un contacto
+    @PutMapping("{name}")
+    public ResponseEntity<Void> updateContacto(@RequestBody UpdatedContact contact, @PathVariable("name") String name){
+        if(!agenda.containsKey("name")){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
 
+        Contact current = agenda.get(name);
+
+        current.setNumber(contact.getNumber());
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    }
+
+    //DELETE /conctacts/nombre -> Eliminar un contacto
+    @DeleteMapping("{name}")
+    public ResponseEntity<Void> deleteContacto(@PathVariable("name") String name){
+        if(!agenda.containsKey("name")){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        agenda.remove(name);
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    }
 
 }
