@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -36,13 +37,13 @@ public class ContactController {
     //POST /conctacts -> Crear un contacto
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Contact createContact(@RequestBody Contact contact) {
+    public Contact createContact(@Valid @RequestBody Contact contact) {
         return agenda.add(contact);
     }
 
     //PUT /conctacts/nombre -> Actualizar un contacto
     @PutMapping("{name}")
-    public void updateContacto(@RequestBody UpdatedContact contact, @PathVariable("name") String name){
+    public void updateContacto( @Valid @RequestBody UpdatedContact contact, @PathVariable("name") String name){
         agenda.update(name, contact);
     }
 

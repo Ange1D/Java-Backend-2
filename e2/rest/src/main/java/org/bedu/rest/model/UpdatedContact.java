@@ -1,6 +1,12 @@
 package org.bedu.rest.model;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 public class UpdatedContact {
+
+    @NotBlank
+    @Size(min=8, max = 10)
     private String number;
 
     public UpdatedContact(){}
