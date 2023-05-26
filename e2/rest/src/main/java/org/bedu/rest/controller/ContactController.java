@@ -1,14 +1,10 @@
 package org.bedu.rest.controller;
 
-import org.bedu.rest.exception.ContactAlreadyExistsException;
-import org.bedu.rest.exception.ContactNotFoundException;
 import org.bedu.rest.model.Contact;
 import org.bedu.rest.model.UpdatedContact;
-import org.bedu.rest.model.response.ErrorResponse;
 import org.bedu.rest.service.AgendaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,19 +21,6 @@ public class ContactController {
         this.agenda = agenda;
     }
 
-    @ExceptionHandler(ContactNotFoundException.class)
-    public ResponseEntity<ErrorResponse> hadleNotFound(ContactNotFoundException ex){
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(new ErrorResponse(ex.getName()+" not found"));
-    }
-
-    @ExceptionHandler(ContactAlreadyExistsException.class)
-    public ResponseEntity<ErrorResponse> handleAlreadyExists(){
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(new ErrorResponse("Contact already exists"));
-    }
 
     //GET /contacts -> Obtener todos los contactos
     @GetMapping
