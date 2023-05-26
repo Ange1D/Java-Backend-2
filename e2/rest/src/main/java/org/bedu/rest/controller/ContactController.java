@@ -25,6 +25,20 @@ public class ContactController {
         this.agenda = agenda;
     }
 
+    @ExceptionHandler(ContactNotFoundException.class)
+    public ResponseEntity<ErrorResponse> hadleNotFound(ContactNotFoundException ex){
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(new ErrorResponse(ex.getName()+" not found"));
+    }
+
+    @ExceptionHandler(ContactAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleAlreadyExists(){
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse("Contact already exists"));
+    }
+
     //GET /contacts -> Obtener todos los contactos
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -34,31 +48,15 @@ public class ContactController {
 
     //GET /contacts/nombre -> Obtener un contacto
     @GetMapping("{name}")
-    public ResponseEntity<Object> getContactByName(@PathVariable("name") String name) {
-        try {
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(agenda.getOne(name));
-        } catch (ContactNotFoundException ex) {
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body(new ErrorResponse(name + " does not exist in agenda"));
-        }
+    public Contact getContactByName(@PathVariable("name") String name) {
+        return agenda.getOne(name);
     }
 
     //POST /conctacts -> Crear un contacto
     @PostMapping
-    //@ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> createContact(@Valid @RequestBody Contact contact) {
-        try {
-            return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .body(agenda.add(contact));
-        } catch (ContactAlreadyExistsException ex) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(new ErrorResponse(contact.getName() + " already exists in agenda"));
-        }
+    @ResponseStatus(HttpStatus.CREATED)
+    public Contact createContact(@Valid @RequestBody Contact contact) {
+        return agenda.add(contact);
     }
 
     //PUT /conctacts/nombre -> Actualizar un contacto

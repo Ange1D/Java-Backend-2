@@ -30,7 +30,7 @@ public class AgendaService {
 
     public Contact getOne(String name) {
         if(!exists(name)){
-            throw new ContactNotFoundException();
+            throw new ContactNotFoundException(name);
         }
         return agenda.get(name.toLowerCase());
     }
