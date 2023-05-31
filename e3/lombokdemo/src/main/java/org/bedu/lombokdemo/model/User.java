@@ -2,7 +2,7 @@ package org.bedu.lombokdemo.model;
 
 import lombok.*;
 
-@Data // Getter, Setter, ToString, Equals, AllArgsConstructor
+//@Data // Getter, Setter, ToString, Equals, AllArgsConstructor
 //@Getter
 //@Setter
 //@ToString
@@ -15,10 +15,10 @@ public class User {
     @NonNull
     private String username;
     @NonNull
-    private String email;
+    private String mail;
     private String password;
     private String address;
     private int age;
-    private boolean activated;
+    private String activated; // Y, N
 
 }
