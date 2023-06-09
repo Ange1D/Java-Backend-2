@@ -1,0 +1,30 @@
+== GET /products
+
+=== Ejemplo de CURL
+include::{snippets}/products/findAll/curl-request.adoc[]
+
+=== Peticion de HTTP
+include::{snippets}/products/findAll/http-request.adoc[]
+
+=== Respuesta de HTTP
+include::{snippets}/products/findAll/http-response.adoc[]
+
+=== Cuerpo de la Respuesta
+include::{snippets}/products/findAll/response-body.adoc[]
+
+=== Estructura de la Respuesta
+include::{snippets}/products/findAll/response-fields.adoc[]
+
+== POST /products
+
+=== Ejemplo de CURL
+include::{snippets}/products/save/curl-request.adoc[]
+
+=== Peticion de HTTP
+include::{snippets}/products/save/http-request.adoc[]
+
+=== Respuesta de HTTP
+include::{snippets}/products/save/http-response.adoc[]
+
+=== Estructura del Cuerpo
+include::{snippets}/products/save/request-fields.adoc[]

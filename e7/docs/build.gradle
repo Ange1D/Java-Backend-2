@@ -40,3 +40,10 @@ tasks.named('asciidoctor') {
 	inputs.dir snippetsDir
 	dependsOn test
 }
+
+// Agregamos la ubicacion de las plantillas de HTML
+asciidoctor{
+	sourceDir 'src/main/asciidoc'
+	attributes \
+	'snippets': file(snippetsDir)
+}
