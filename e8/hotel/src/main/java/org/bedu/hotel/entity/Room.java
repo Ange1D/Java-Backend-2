@@ -6,32 +6,23 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "guests")
-public class Guest {
+@Table(name = "rooms")
+public class Room {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     @Column(nullable = false)
-    private String name;
+    private String number;
 
-    @Column(nullable = false)
-    private int age;
-
-    @Column
-    private String telephone;
-
-    @Column
-    private String address;
-
-    @ManyToOne
-    @JoinColumn(name = "room_id")
-    private Room room;
+    @OneToMany(mappedBy = "room")
+    List<Guest> guests;
 }

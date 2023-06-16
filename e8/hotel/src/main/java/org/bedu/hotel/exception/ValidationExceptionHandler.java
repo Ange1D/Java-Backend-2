@@ -1,58 +1,44 @@
 package org.bedu.hotel.exception;
 
-import org.bedu.hotel.dto.GuestDTO;
-import org.bedu.hotel.dto.guest.CreateGuestDTO;
-import org.bedu.hotel.dto.guest.UpdateGuestDTO;
-import org.bedu.hotel.entity.Guest;
-import org.bedu.hotel.mapper.IGuestMapper;
-import org.bedu.hotel.repository.IGuestRepository;
-import org.bedu.hotel.service.IGuestService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+
+import org.bedu.hotel.dto.ResponseErrorDTO;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.List;
-import java.util.Optional;
 
-@Service
-public class GuestServiceImpl implements IGuestService {
+@RestControllerAdvice
+public class ValidationExceptionHandler {
 
-    private IGuestRepository repository;
-    private IGuestMapper mapper;
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ResponseErrorDTO> handleValidationErrors(MethodArgumentNotValidException ex) {
 
-    @Autowired
-    public GuestServiceImpl(IGuestRepository repository, IGuestMapper mapper) {
-        this.repository = repository;
-        this.mapper = mapper;
-    }
+        /*
+         * List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
+         * List<String> errors = new LinkedList<>();
+         *
+         * for (FieldError fieldError : fieldErrors) {
+         * errors.add(fieldError.getDefaultMessage());
+         * }
+         */
 
-    public List<GuestDTO> findAll() {
-        List<Guest> guests = repository.findAll();
-        return guests.stream().map(mapper::toDTO).toList();
-    }
+        List<String> errors = ex
+                .getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(FieldError::getDefaultMessage)
+                .toList();
 
-    public Optional<GuestDTO> findById(long id) {
-        Optional<Guest> guest = repository.findById(id);
-        return guest.isPresent() ? Optional.of(mapper.toDTO(guest.get())) : Optional.of(null);
-    }
-
-    public GuestDTO save(CreateGuestDTO data) {
-        Guest entity = repository.save(mapper.toModel(data));
-        return mapper.toDTO(entity);
-    }
-
-    public void update(long id, UpdateGuestDTO data) {
-        Optional<Guest> actual = repository.findById(id);
-
-        if (!actual.isPresent()) {
-            throw new GuestNotFoundException();
-        }
-
-        Guest guest = actual.get();
-        mapper.toModel(guest, data);
-        repository.save(guest);
-    }
-
-    public void delete(long id) {
-        repository.deleteById(id);
+        return ResponseEntity
+                .badRequest()
+                .body(ResponseErrorDTO
+                        .builder()
+                        .error(true)
+                        .message("Los datos ingresados son inválidos")
+                        .errors(errors)
+                        .build());
     }
 }

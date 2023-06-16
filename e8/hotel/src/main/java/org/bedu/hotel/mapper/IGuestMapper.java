@@ -4,7 +4,11 @@ import org.bedu.hotel.dto.GuestDTO;
 import org.bedu.hotel.dto.guest.CreateGuestDTO;
 import org.bedu.hotel.dto.guest.UpdateGuestDTO;
 import org.bedu.hotel.entity.Guest;
-import org.mapstruct.*;
+import org.mapstruct.InjectionStrategy;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR, nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface IGuestMapper {
